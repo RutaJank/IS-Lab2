@@ -5,4 +5,11 @@ def desired_fromula(x):
 
 x = np.random.uniform(0, 1, 10)
 d = desired_fromula(x)
-print(d)
+
+w1 = np.random.uniform(0, 1, 5)
+b1 = np.random.uniform(0, 1, 5)
+
+w2 = np.random.uniform(0, 1, 5)
+b2 = np.random.uniform(0, 1)
+
+p = 0.1
