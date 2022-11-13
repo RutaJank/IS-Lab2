@@ -1,17 +1,16 @@
 import numpy as np
 import helper as h
 import matplotlib.pyplot as plt
-
+#np.random.seed(4)
 d = []
-x = np.linspace(0.1, 1, 10)
-for  i in range(len(x)):
-    d.append(h.desired_fromula(x[i]))
+x = np.linspace(0.1, 1, 20)
+d = h.desired_fromula(x)
 
-w1 = np.random.uniform(0, 1, 5)
-b1 = np.random.uniform(0, 1, 5)
+w1 = np.random.rand(5)
+b1 = np.random.rand(5)
 
-w2 = np.random.uniform(0, 1, 5)
-b2 = np.random.uniform(0, 1)
+w2 = np.random.rand(5)
+b2 = np.random.rand()
 v1 = np.empty(5)
 y1 = np.empty(5)
 v2 = 0
@@ -20,36 +19,34 @@ delta = np.empty(5)
 
 p = 0.1
 
-for i in range(100000):
+for i in range(10000):
     for j in range(len(x)):
-        for n in range(len(w1)):
-            v1[n] = h.get_parameter_value(x[j],w1[n],b1[n])
-        for n in range(len(v1)):
-            y1[n] = h.sigmoid(v1[n])
+        v1 = h.get_parameter_value(x[j],w1,b1)
+        y1 = h.sigmoid(v1)
         
-        v2 = y1[0] * w2[0] + y1[1] * w2[1] + y1[2] * w2[2] + y1[3] * w2[3] + b2 
+        v2 = sum(np.multiply(y1, w2)) + b2
 
         e = d[j] - v2
 
-        for n in range(len(y1)):
-            delta[n] = y1[n] * (1-y1[n]) * (e * w2[n])
+        delta = y1 * (1-y1) * (e * w2)
         
-        for n in range(len(y1)):
-            w2[n] += p * e * y1[n]
-            w1[n] += p * delta[n] * x[j]
-            b1 += p * delta[n]
+        w2 += p * e * y1
+        w1 += p * delta * x[j]
+        b1 += p * delta
         b2 += p * e
     
+
 d2 = []
 for i in range(len(x)):
-    for n in range(len(w1)):
-         v1[n] = h.get_parameter_value(x[i],w1[n],b1[n])
-    for n in range(len(v1)):
-        y1[n] = h.sigmoid(v1[n])
-    d2.append(y1[0] * w2[0] + y1[1] * w2[1] + y1[2] * w2[2] + y1[3] * w2[3] + b2)
+    v1 = h.get_parameter_value(x[i],w1,b1)
+    y1 = h.sigmoid(v1)
+    d2.append(sum(np.multiply(y1, w2)) + b2)
 
-print(d)
-print(d2)
+print('w1 ', w1)
+print('w2 ', w2)
+print('b2 ', b2)
+print('d ', d)
+print('d2 ', d2)
 fig, ax = plt.subplots()
 
 ax.plot(x, d, x, d2)

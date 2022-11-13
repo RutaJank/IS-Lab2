@@ -9,5 +9,5 @@ def desired_fromula(x):
     return y
 
 def sigmoid(v):
-    y = 1/(1+np.exp(-v))
+    y = 1/(1+np.exp(-1*v))
     return y
